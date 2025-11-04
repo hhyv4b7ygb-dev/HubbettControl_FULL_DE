@@ -1,0 +1,24 @@
+workflows:
+  ios-app:
+    name: HubbettControl iOS Build (unsigned)
+    environment:
+      vars:
+        XCODE_PROJECT: "HubbettControl.xcodeproj"
+        XCODE_SCHEME: "HubbettControl"
+      xcode: 15.0
+    scripts:
+      - name: Build unsigned iOS app
+        script: |
+          mkdir -p build/ipa
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build \
+            CONFIGURATION_BUILD_DIR=build/ipa
+    artifacts:
+      - build/ipa/*.app
